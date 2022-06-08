@@ -5,9 +5,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.treinaweb.adoteumpet.api.pet.dtos.PetRequest;
 import br.com.treinaweb.adoteumpet.api.pet.dtos.PetResponse;
 import br.com.treinaweb.adoteumpet.api.pet.mappers.PetMapper;
 import br.com.treinaweb.adoteumpet.core.repositories.PetRepository;
+import lombok.var;
 
 @Service
 public class PetService {
@@ -23,6 +25,12 @@ public class PetService {
             .stream()
             .map(petMapper::toResponse)
             .toList();
+    }
+
+    public PetResponse create(PetRequest petRequest){
+        var petToCreate = petMapper.toModel(petRequest);
+        var createdPet = petRepository.save(petToCreate);
+        return petMapper.toResponse(createdPet);
     }
 
 }
